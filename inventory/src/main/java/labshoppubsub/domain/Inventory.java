@@ -12,26 +12,26 @@ import java.util.Date;
 
 public class Inventory  {
 
-    
+
     @Id
     //@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    
+
     private Long stock;
 
     @PostPersist
     public void onPostPersist(){
     }
 
-    // @PostLoad
-    // public void makeDelay(){
-    //     try {
-    //         Thread.currentThread().sleep((long) (400 + Math.random() * 220));
-    //     } catch (InterruptedException e) {
-    //         e.printStackTrace();
-    //     }
+    @PostLoad
+    public void makeDelay(){
+        try {
+            Thread.currentThread().sleep((long) (400 + Math.random() * 220));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-    // }
+    }
 
     public static InventoryRepository repository(){
         InventoryRepository inventoryRepository = InventoryApplication.applicationContext.getBean(InventoryRepository.class);
@@ -41,14 +41,14 @@ public class Inventory  {
     public static void decreaseStock(OrderPlaced orderPlaced) {
 
         /** fill out following code  */
-        
+
          repository().findById(Long.valueOf(orderPlaced.getProductId())).ifPresent(inventory->{
              inventory.setStock(inventory.getStock() - orderPlaced.getQty());
              repository().save(inventory);
 
          });
 
-        
+
     }
 
 
